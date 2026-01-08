@@ -262,16 +262,6 @@
 					<progress value="0" max="100" id="progress" hidden=1></progress>  
 				</div>
 			</div>
-			<div class="info-overlay" id="select-version">
-				<p>
-					<a href="#" id="load-full-version">FULL VERSION</a><br/>
-					the complete game ~144mb
-				</p>
-				<p>
-					<a href="#" id="load-minimal-version">MINIMAL VERSION</a><br/>
-					no intro, no music ~11mb
-				</p>
-			</div>
 			<!-- button enums from src/input.h -->
 			<div class="button button-dpad button-dpad-up" style="left: 9vw; bottom: 22.5vw" data-button="82"><div></div></div>
 			<div class="button button-dpad button-dpad-down" style="left: 9vw; bottom: 9.5vw" data-button="81"><div></div></div>
@@ -289,11 +279,8 @@
 			
 		</div>
 		<script type='text/javascript'>
-			var loadScript = (ev, src) => {
-				ev.preventDefault();
-
+			var loadScript = (src) => {
 				// Hide select-version, show loader
-				document.getElementById('select-version').style.display = 'none';
 				document.getElementById('loading').style.display = 'block';
 
 				// Load the requested script
@@ -307,15 +294,11 @@
 				return false;
 			};
 
-			var requestFullscreen = (ev) => {
-				ev.preventDefault();
+			var requestFullscreen = () => {
 				document.getElementById('game').requestFullscreen();
 			};
 
-			document.getElementById('select-version').style.display = 'block';
-			document.getElementById('fullscreen').addEventListener('click', (ev) => requestFullscreen(ev, 'wipeout.js'))
-			document.getElementById('load-full-version').addEventListener('click', (ev) => loadScript(ev, 'wipeout.js'));
-			document.getElementById('load-minimal-version').addEventListener('click', (ev) => loadScript(ev, 'wipeout-minimal.js'));
+			document.getElementById('fullscreen').addEventListener('click', requestFullscreen);
 
 			var statusElement = document.getElementById('status');
 			var progressElement = document.getElementById('progress');
@@ -390,6 +373,7 @@
 				}
 			};
 			Module.setStatus('downloading...');
+			loadScript('wipeout-minimal.js');
 			window.onerror = () => {
 				Module.setStatus('Exception thrown, see JavaScript console');
 				document.getElementById('loading').style.display = 'block';
